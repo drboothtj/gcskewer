@@ -19,7 +19,6 @@ def print_to_system(string_to_print):
 #Check the required arguments
 def check_arguments(arguments):
     number_of_arguments = len(arguments)
-    print(number_of_arguments)
     if number_of_arguments > 4:
         print_to_system("ERROR: Too many arguments! Please provide only the filename, window  and step size.")
         quit()
