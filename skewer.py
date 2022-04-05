@@ -74,7 +74,6 @@ def build_dataframe(record_names, record_sequences, window_size, step_size):
         record_name = record_names[i]
         record_sequence = record_sequences[i]
         sequence_length = len(record_sequence) - window_size
-        print(sequence_length)
         print_to_system('Calculating GC-skew for ' + record_name + '.')
         cummulative_gc = 0
         cummulative_at = 0
@@ -112,6 +111,7 @@ def calculate_skew(x, y):
 
 #plots the gc dataframe and saves as .html    
 def plot_data(df):
+    print_to_system('Plotting data.')
     #create an empty figure with a secondary y axis!
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     #Now individually add traces
@@ -119,7 +119,8 @@ def plot_data(df):
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['at skew'], name='AT Skew'), secondary_y=False)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['cummulative gc skew'], name='Cummulative GC Skew'), secondary_y=True)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['cummulative at skew'], name='Cummulative AT Skew'), secondary_y=True)
-    fig.write_html("test.html")
+    fig.write_html("skewer.html")
+    print_to_system('Plotting saved to skewer.html')
 #Run Workflow
 def main():
     print_to_system('Running Skewer version 0.0.1!')
@@ -127,5 +128,6 @@ def main():
     record_names, record_sequences = read_file(filename)
     gc_dataframe = build_dataframe(record_names, record_sequences, window_size, step_size)
     plot_data(gc_dataframe)
+    print_to_system('Finished!')
 #Run
 main()
