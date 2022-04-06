@@ -65,42 +65,38 @@ def read_genbank(filename):
     return record_names, record_sequences
 
 #creates a dataframe with GC-skew data for plotting in plotly
-def build_dataframe(record_names, record_sequences, window_size, step_size):
+def build_dataframe(record_name, record_sequence, window_size, step_size):
     skew_data = []
-    number_of_records = len(record_names)
-    #For each record in the records list...
-    for i in range(0, number_of_records):
-        record_name = record_names[i]
-        record_sequence = record_sequences[i]
-        sequence_length = len(record_sequence) - window_size
-        print_to_system('Calculating GC-skew for ' + record_name + '.')
-        cummulative_gc = 0
-        cummulative_at = 0
-        #calculate GC skew for each subsequence using the sliding window
-        for start_point in range(0, sequence_length, step_size):
-            end_point = start_point + window_size
-            mid_point = start_point + (window_size/2)
-            sub_sequence = record_sequence[start_point:end_point]
-            g_count = sub_sequence.upper().count('G')
-            c_count = sub_sequence.upper().count('C')
-            t_count = sub_sequence.upper().count('T')
-            a_count = sub_sequence.upper().count('A')
-            gc_skew = calculate_skew(c_count, g_count)
-            cummulative_gc += gc_skew
-            at_skew = calculate_skew(t_count, a_count)
-            cummulative_at += at_skew
-            row = [
-                    record_name, mid_point, 
-                    g_count, c_count, gc_skew, cummulative_gc,
-                    a_count, t_count, at_skew, cummulative_at
-                   ]
-            skew_data.append(row)
-            gc_dataframe = pd.DataFrame(skew_data, columns = 
-                                                ['record', 'mid point',
-                                                'g count', 'c count', 'gc skew', 'cummulative gc skew',
-                                                'a count', 't count', 'at skew', 'cummulative at skew'])
-            #Add percentage completion
-        return gc_dataframe
+    sequence_length = len(record_sequence) - window_size
+    print_to_system('Calculating GC-skew for ' + record_name + '.')
+    cummulative_gc = 0
+    cummulative_at = 0
+    #calculate GC skew for each subsequence using the sliding window
+    for start_point in range(0, sequence_length, step_size):
+        end_point = start_point + window_size
+        mid_point = start_point + (window_size/2)
+        sub_sequence = record_sequence[start_point:end_point]
+        g_count = sub_sequence.upper().count('G')
+        c_count = sub_sequence.upper().count('C')
+        t_count = sub_sequence.upper().count('T')
+        a_count = sub_sequence.upper().count('A')
+        gc_skew = calculate_skew(c_count, g_count)
+        cummulative_gc += gc_skew
+        at_skew = calculate_skew(t_count, a_count)
+        cummulative_at += at_skew
+        row = [
+                record_name, mid_point, 
+                g_count, c_count, gc_skew, cummulative_gc,
+                a_count, t_count, at_skew, cummulative_at
+               ]
+        skew_data.append(row)
+        gc_dataframe = pd.DataFrame(skew_data, columns = 
+                                            ['record', 'mid point',
+                                            'g count', 'c count', 'gc skew', 'cummulative gc skew',
+                                            'a count', 't count', 'at skew', 'cummulative at skew'])
+        #Add percentage completion
+        
+    return gc_dataframe
 
 #calculates skew from two numbers
 ###Potentially update to take letters and string. Will simplify above code
@@ -109,7 +105,7 @@ def calculate_skew(x, y):
     return skew
 
 #plots the gc dataframe and saves as .html    
-def plot_data(df):
+def plot_data(df, name):
     print_to_system('Plotting data.')
     #create an empty figure with a secondary y axis!
     fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -118,15 +114,21 @@ def plot_data(df):
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['at skew'], name='AT Skew'), secondary_y=False)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['cummulative gc skew'], name='Cummulative GC Skew'), secondary_y=True)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['cummulative at skew'], name='Cummulative AT Skew'), secondary_y=True)
-    fig.write_html("skewer.html")
-    print_to_system('Plotting saved to skewer.html')
+    file_name = name + ".html"
+    fig.write_html(file_name)
+    print_to_system('Plot saved to ' + file_name)
+
 #Run Workflow
 def main():
     print_to_system('Running Skewer version 0.0.1!')
     filename, window_size, step_size = check_arguments(sys.argv)
     record_names, record_sequences = read_file(filename)
-    gc_dataframe = build_dataframe(record_names, record_sequences, window_size, step_size)
-    plot_data(gc_dataframe)
+    #For each record in the records list generate the dataframe, plot and save
+    for i in range(0, len(record_names)):
+        gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
+        name = record_names[i] + '_' + str(i)
+        #write_data
+        plot_data(gc_dataframe, name)
     print_to_system('Finished!')
 #Run
 main()
