@@ -25,4 +25,5 @@ Comming soon...
 2. Automatically calculate reccomended step and window sizes,
 3. Plot genbank features over the skew plot,
 4. Write the resulting data to a .csv file,
-5. Compile into a software package.
+5. Add % completeion for longer analyses,
+6. Compile into a software package.
