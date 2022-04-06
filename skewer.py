@@ -109,7 +109,6 @@ def calculate_skew(x, y):
 
 #plots the gc dataframe and saves as .html    
 def plot_data(df, name):
-    print_to_system('Plotting data.')
     #create an empty figure with a secondary y axis!
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     #Now individually add traces
