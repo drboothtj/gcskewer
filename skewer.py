@@ -1,4 +1,4 @@
-###Skewer version 0.0.1##
+###Skewer version 0.0.2##
 ###Dr . T. J. Booth###
 
 ###imports
@@ -28,6 +28,11 @@ def check_arguments(arguments):
     else:
         print_to_system("Analysing GC-skew from " + arguments[1] + "...")
         return arguments[1], int(arguments[2]), int(arguments[3])
+        
+def write_csv(df, name):
+    file_name = name + '.csv'
+    print_to_system('Writing to ' + file_name)
+    df.to_csv(file_name, index = False)
 
 ###specific functions
 #Determine if file is correct type and pass to correct reader
@@ -94,8 +99,6 @@ def build_dataframe(record_name, record_sequence, window_size, step_size):
                                             ['record', 'mid point',
                                             'g count', 'c count', 'gc skew', 'cummulative gc skew',
                                             'a count', 't count', 'at skew', 'cummulative at skew'])
-        #Add percentage completion
-        
     return gc_dataframe
 
 #calculates skew from two numbers
@@ -120,15 +123,15 @@ def plot_data(df, name):
 
 #Run Workflow
 def main():
-    print_to_system('Running Skewer version 0.0.1!')
+    print_to_system('Running Skewer version 0.0.2!')
     filename, window_size, step_size = check_arguments(sys.argv)
     record_names, record_sequences = read_file(filename)
     #For each record in the records list generate the dataframe, plot and save
     for i in range(0, len(record_names)):
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
         name = record_names[i] + '_' + str(i)
-        #write_data
+        write_csv(gc_dataframe, name)
         plot_data(gc_dataframe, name)
-    print_to_system('Finished!')
+    print_to_system('Skewer has finished!')
 #Run
 main()
