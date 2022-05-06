@@ -1,0 +1,8 @@
+README.md
+setup.py
+skewer.egg-info/PKG-INFO
+skewer.egg-info/SOURCES.txt
+skewer.egg-info/dependency_links.txt
+skewer.egg-info/entry_points.txt
+skewer.egg-info/requires.txt
+skewer.egg-info/top_level.txt
