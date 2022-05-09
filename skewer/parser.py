@@ -30,11 +30,11 @@ def get_parser():
         help='path to a genbank file containing nucleotide sequences'
         )
     parser.add_argument(
-        '-w',
-        '--window',
-        type=int,
-        default=500,
-        help='window size for composition analysis'
+        '-fp',
+        '--frame-plot',
+        action='store_true',
+        default=False,
+        help='output frame plots'
         )
     parser.add_argument(
         '-s',
@@ -44,16 +44,16 @@ def get_parser():
         help='step size for composition analysis'
         )
     parser.add_argument(
-        '-fp',
-        '--frame-plot',
-        action='store_true',
-        default=False,
-        help='output frame plots'
+        '-w',
+        '--window',
+        type=int,
+        default=500,
+        help='window size for composition analysis'
         )
     return parser
 
 def parse_args():
     '''get the arguments from the console via the parser'''
-    arg_parser = get_parser()
-    args = arg_parser.parse_args()
+    parser = get_parser()
+    args = parser.parse_args()
     return args

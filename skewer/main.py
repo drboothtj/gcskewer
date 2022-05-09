@@ -5,14 +5,17 @@ from skewer import io, parser
 def build_dataframe(record_name, record_sequence, window_size, step_size):
     skew_data = []
     sequence_length = len(record_sequence) - window_size
+    if sequence_length < 1:
+        sequence_length = 1
     io.print_to_system('Calculating GC-skew for ' + record_name + '.')
     cummulative_gc = 0
     cummulative_at = 0
+    gc_dataframe = None
     for start_point in range(0, sequence_length, step_size):
         end_point = start_point + window_size
         mid_point = start_point + (window_size/2)
         sub_sequence = record_sequence[start_point:end_point]
-        g_count = sub_sequence.upper().count('G')
+        g_count = sub_sequence.upper().count('G') #upper whole sequence
         c_count = sub_sequence.upper().count('C')
         t_count = sub_sequence.upper().count('T')
         a_count = sub_sequence.upper().count('A')
@@ -30,11 +33,23 @@ def build_dataframe(record_name, record_sequence, window_size, step_size):
                                             ['record', 'mid point',
                                             'g count', 'c count', 'gc skew', 'cummulative gc skew',
                                             'a count', 't count', 'at skew', 'cummulative at skew'])
+    assert gc_dataframe is not None
     return gc_dataframe
 
 def calculate_skew(x, y): 
     skew = (x - y)/(x + y)
     return skew
+
+def get_differences(dataframe):
+    gc_max = dataframe['gc skew'].max()
+    gc_min = dataframe['gc skew'].min()
+    at_max = dataframe['at skew'].max()
+    at_min = dataframe['at skew'].min()
+    gc_difference = gc_max -  gc_min
+    at_difference = at_max -  at_min
+    return at_difference, gc_difference
+
+
 
 def get_frames(record_names, record_sequences):
     length = len(record_names)
@@ -74,12 +89,19 @@ def main():
 
     window_size = args.window
     step_size = args.step
+    min_max_data = []
+    min_max_data.append(["Gene", "AT Difference", "GC Difference"])
 
     for i in range(0, len(record_names)):
+        print(record_names[i], record_sequences[i])
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
-        name = record_names[i] + '_' + str(i)
-        io.write_csv(gc_dataframe, name)
+        at_difference, gc_difference = get_differences(gc_dataframe)
+        name = record_names[i]
+        min_max_data.append([name,at_difference,gc_difference])
+        io.df_to_csv(gc_dataframe, name)
         io.plot_data(gc_dataframe, name)
+    
+    io.list_to_csv('skewer_results.csv', min_max_data)
     io.print_to_system('Skewer has finished!')
 
 if __name__ == '__main__':

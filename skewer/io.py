@@ -1,3 +1,4 @@
+import csv
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
@@ -8,10 +9,15 @@ def print_to_system(string_to_print):
     current_time = now.strftime("[%H:%M:%S]: ")
     print(current_time + string_to_print)
         
-def write_csv(df, name):
+def df_to_csv(df, name):
     file_name = name + '.csv'
     print_to_system('Writing to ' + file_name)
     df.to_csv(file_name, index = False)
+
+def list_to_csv(filename, write_lines):
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file,delimiter=',')
+        writer.writerows(write_lines)
 
 def read_file(filename, file_type):
     record_names = []
