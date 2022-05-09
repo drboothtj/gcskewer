@@ -36,6 +36,25 @@ def calculate_skew(x, y):
     skew = (x - y)/(x + y)
     return skew
 
+def get_frames(record_names, record_sequences):
+    length = len(record_names)
+    for i in range(0, length):
+        sequence = list(record_sequences[i])
+        frame_1 = ''.join([str(base) for base in list(sequence)[::3]])
+        record_names.append(record_names[i] + '_frame_1')
+        record_sequences.append(frame_1)
+        del sequence[0]
+        frame_2 = ''.join([str(base) for base in list(sequence)[::3]])
+        record_names.append(record_names[i] + '_frame_2')
+        record_sequences.append(frame_2)
+        del sequence[0]
+        frame_3 = ''.join([str(base) for base in list(sequence)[::3]])
+        record_names.append(record_names[i] + '_frame_3')
+        record_sequences.append(frame_3)
+    return record_names, record_sequences
+
+    return record_names, record_sequences
+
 def main():
     io.print_to_system('Running Skewer version 0.1.0!')
     args = parser.parse_args()
@@ -49,6 +68,9 @@ def main():
     else:
         io.print_to_system("No input provided; exiting.")
         exit()
+
+    if args.frame_plot is True:
+        record_names, record_sequences = get_frames(record_names, record_sequences)
 
     window_size = args.window
     step_size = args.step
