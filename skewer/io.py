@@ -31,6 +31,8 @@ def plot_data(df, name):
     #create an empty figure with a secondary y axis!
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     #Now individually add traces
+    gc_count = df['g count'] + df['c count']
+    fig.add_trace(go.Scatter(x=df['mid point'], y=gc_count, name='GC Content'), secondary_y=False)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['gc skew'], name='GC Skew'), secondary_y=False)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['at skew'], name='AT Skew'), secondary_y=False)
     fig.add_trace(go.Scatter(x=df['mid point'], y=df['cummulative gc skew'], name='Cummulative GC Skew'), secondary_y=True)

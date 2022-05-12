@@ -30,6 +30,20 @@ def get_parser():
         help='path to a genbank file containing nucleotide sequences'
         )
     parser.add_argument(
+        '-c',
+        '--csv',
+        action='store_true',
+        default=False,
+        help='output skew data as .csv'
+        )
+    parser.add_argument(
+        '-ht',
+        '--html',
+        action='store_true',
+        default=False,
+        help='output skew data as interactive .html graph'
+        )
+    parser.add_argument(
         '-fp',
         '--frame-plot',
         action='store_true',

@@ -15,10 +15,11 @@ def build_dataframe(record_name, record_sequence, window_size, step_size):
         end_point = start_point + window_size
         mid_point = start_point + (window_size/2)
         sub_sequence = record_sequence[start_point:end_point]
-        g_count = sub_sequence.upper().count('G') #upper whole sequence
-        c_count = sub_sequence.upper().count('C')
-        t_count = sub_sequence.upper().count('T')
-        a_count = sub_sequence.upper().count('A')
+        sub_seqience_upper = sub_sequence.upper()
+        g_count = sub_seqience_upper.count('G') 
+        c_count = sub_seqience_upper.count('C')
+        t_count = sub_seqience_upper.count('T')
+        a_count = sub_seqience_upper.count('A')
         gc_skew = calculate_skew(c_count, g_count)
         cummulative_gc += gc_skew
         at_skew = calculate_skew(t_count, a_count)
@@ -93,13 +94,14 @@ def main():
     min_max_data.append(["Gene", "AT Difference", "GC Difference"])
 
     for i in range(0, len(record_names)):
-        print(record_names[i], record_sequences[i])
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
         at_difference, gc_difference = get_differences(gc_dataframe)
         name = record_names[i]
         min_max_data.append([name,at_difference,gc_difference])
-        io.df_to_csv(gc_dataframe, name)
-        io.plot_data(gc_dataframe, name)
+        if args.csv is True:
+            io.df_to_csv(gc_dataframe, name)
+        if args.html is True:
+            io.plot_data(gc_dataframe, name)
     
     io.list_to_csv('skewer_results.csv', min_max_data)
     io.print_to_system('Skewer has finished!')
