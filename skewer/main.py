@@ -7,7 +7,6 @@ def build_dataframe(record_name, record_sequence, window_size, step_size):
     sequence_length = len(record_sequence) - window_size
     if sequence_length < 1:
         sequence_length = 1
-    io.print_to_system('Calculating GC-skew for ' + record_name + '.')
     cummulative_gc = 0
     cummulative_at = 0
     gc_dataframe = None
