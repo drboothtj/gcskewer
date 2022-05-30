@@ -49,8 +49,6 @@ def get_differences(dataframe):
     at_difference = at_max -  at_min
     return at_difference, gc_difference
 
-
-
 def get_frames(record_names, record_sequences):
     length = len(record_names)
     for i in range(0, length):
