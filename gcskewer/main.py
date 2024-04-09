@@ -2,12 +2,10 @@
 main script for gcskewer
 '''
 
-from gcskewer import io, parser
-import sys
+from gcskewer import checks, io, parser
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from Bio import SeqIO
 
 ###replace!
 def build_dataframe(record_name, record_sequence, window_size, step_size):
@@ -47,17 +45,16 @@ def calculate_skew(x, y):
 
 #Run Workflow
 def main():
-    io.print_to_system('Running Skewer version 0.0.2!')
+    io.print_to_system('Running gcskewer...')
     args = parser.get_args()
-    if args.genbank:
-        print('genbank')
-    record_names, record_sequences = io.read_file(filename)
+    filename, _format = checks.check_args(args)
+    record_names, record_sequences = io.read_file(filename, _format)
     #For each record in the records list generate the dataframe, plot and save
     for i in range(0, len(record_names)):
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
         name = record_names[i] + '_' + str(i)
         write_csv(gc_dataframe, name)
         plot_data(gc_dataframe, name)
-    print_to_system('Skewer has finished!')
+    print_to_system('gcskewer has finished!')
 #Run
 main()
