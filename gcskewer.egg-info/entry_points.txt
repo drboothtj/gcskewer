@@ -1,0 +1,3 @@
+[console_scripts]
+gcskewer = gcskewer.main:main
+

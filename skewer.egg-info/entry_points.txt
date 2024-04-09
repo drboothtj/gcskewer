@@ -1,0 +1,3 @@
+[console_scripts]
+skewer = skewer.main:main
+
