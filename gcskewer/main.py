@@ -1,17 +1,16 @@
 '''
 main script for gcskewer
+    functions:
+        !!!!
 '''
 
 from gcskewer import checks, io, parser
 import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
-###replace!
 def build_dataframe(record_name, record_sequence, window_size, step_size):
     skew_data = []
     sequence_length = len(record_sequence) - window_size
-    print_to_system('Calculating GC-skew for ' + record_name + '.')
+    io.print_to_system('Calculating GC-skew for ' + record_name + '.')
     cummulative_gc = 0
     cummulative_at = 0
     #calculate GC skew for each subsequence using the sliding window
@@ -47,14 +46,22 @@ def calculate_skew(x, y):
 def main():
     io.print_to_system('Running gcskewer...')
     args = parser.get_args()
-    filename, _format = checks.check_args(args)
+    filename, _format = checks.check_input(args)
     record_names, record_sequences = io.read_file(filename, _format)
+    assert record_sequences, 'No input sequences! Check your file and that you have used the correct parameter for the filetype (-g/-f)'
+    window_size, step_size = checks.check_window_and_step(args.window_size, args.step_size, record_sequences)
+    
     #For each record in the records list generate the dataframe, plot and save
     for i in range(0, len(record_names)):
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
         name = record_names[i] + '_' + str(i)
-        write_csv(gc_dataframe, name)
-        plot_data(gc_dataframe, name)
-    print_to_system('gcskewer has finished!')
-#Run
-main()
+        if args.csv:
+            io.write_csv(gc_dataframe, name)
+        if args.plot:
+            io.plot_data(gc_dataframe, name)
+        if args.svg:
+            io.plot_svg(gc_dataframe, name)
+    io.print_to_system('gcskewer has finished!')
+
+if __name__ == "__main__":
+    main()

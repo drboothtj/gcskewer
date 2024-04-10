@@ -51,7 +51,7 @@ def get_parser():
         '-ws',
         '--window-size',
         type=int,
-        default=500,
+        default=None,
         help = (
             'window size for gc-skew plot'
         )
@@ -60,36 +60,33 @@ def get_parser():
         '-ss',
         '--step-size',
         type=int,
-        default=50,
+        default=None,
         help = (
             'step size for gc-skew plot'
         )
     )
     parser.add_argument(
-        '-o',
-        '--output',
-        type=str,
-        default='output.csv',
+        '-c',
+        '--csv',
+        action="store_true",
         help = (
-            'prefix for output .csv file'
+            'write the output to a .csv file'
         )
     )
     parser.add_argument(
         '-s',
         '--svg',
-        type=str,
-        default=None,
+        action="store_true",
         help = (
-            'prefix for output .svg file'
+            'write the output to an .svg file'
         )
     )
     parser.add_argument(
         '-p',
         '--plot',
-        type=str,
-        default=None,
+        action="store_true",
         help = (
-            'prefix for output .html file'
+            'write the output to an .html file'
         )
     )
     return parser

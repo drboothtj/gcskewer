@@ -1,6 +1,7 @@
 from datetime import datetime
 from Bio import SeqIO
-
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def read_file(filename, _format):
     print_to_system('Reading fasta: ' + filename)
