@@ -1,13 +1,29 @@
 '''
 main script for gcskewer
     functions:
-        !!!!
+        build_dataframe(
+            record_name: str, record_sequence: str, window_size: int, step_size: int
+            ) -> DataFrame
+        calculate_skew(x: int, y: int) -> float
+        main()
 '''
 
-from gcskewer import checks, io, parser
 import pandas as pd
+from pandas import DataFrame
+from gcskewer import checks, io, parser
 
-def build_dataframe(record_name, record_sequence, window_size, step_size):
+def build_dataframe(
+    record_name: str, record_sequence: str, window_size: int, step_size: int
+    ) -> DataFrame:
+    '''
+    get gc skew and store in a dataframe
+        record_name: name of the dna sequence
+        record_sequence: dna sequence
+        window_size: size of the analysis window
+        step_size: step size to move the window
+    returns:
+        gc_dataframe: gc data dependent on midpoint for plotting
+    '''
     skew_data = []
     sequence_length = len(record_sequence) - window_size
     io.print_to_system('Calculating GC-skew for ' + record_name + '.')
@@ -27,30 +43,45 @@ def build_dataframe(record_name, record_sequence, window_size, step_size):
         at_skew = calculate_skew(t_count, a_count)
         cummulative_at += at_skew
         row = [
-                record_name, mid_point, 
+                record_name, mid_point,
                 g_count, c_count, gc_skew, cummulative_gc,
                 a_count, t_count, at_skew, cummulative_at
                ]
         skew_data.append(row)
-        gc_dataframe = pd.DataFrame(skew_data, columns = 
+        gc_dataframe = pd.DataFrame(skew_data, columns =
                                             ['record', 'mid point',
                                             'g count', 'c count', 'gc skew', 'cummulative gc skew',
                                             'a count', 't count', 'at skew', 'cummulative at skew'])
     return gc_dataframe
 
-def calculate_skew(x, y): 
+def calculate_skew(x: int, y: int) -> float:
+    '''
+    calculate gc skew
+        arguments
+    '''
     skew = (x - y)/(x + y)
     return skew
 
-#Run Workflow
 def main():
+    '''
+    main routine for gcskewer
+        arguments: 
+            None
+        returns: 
+            None
+    '''
     io.print_to_system('Running gcskewer...')
     args = parser.get_args()
     filename, _format = checks.check_input(args)
     record_names, record_sequences = io.read_file(filename, _format)
-    assert record_sequences, 'No input sequences! Check your file and that you have used the correct parameter for the filetype (-g/-f)'
-    window_size, step_size = checks.check_window_and_step(args.window_size, args.step_size, record_sequences)
-    
+    assert record_sequences, (
+        'No input sequences!'
+        'Check your file and that you have used the correct parameter for the filetype (-g/-f)'
+    )
+    window_size, step_size = checks.check_window_and_step(
+        args.window_size, args.step_size, record_sequences
+        )
+
     #For each record in the records list generate the dataframe, plot and save
     for i in range(0, len(record_names)):
         gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
