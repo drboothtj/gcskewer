@@ -40,6 +40,12 @@ This script was origionally inspired by Nivina et al.'s paper: [GRINS: Genetic e
 
 ![gcskewer example output SVG](https://github.com/drboothtj/gcskewer/blob/main/example_data/gbk/BGC0001812.1_0.svg)
 
+## Citation
+If you use `gcskewer`, please cite:
+
+Gomez-Escribano, J. P., Dorai-Raj, S., Baker, D., Lacey, E., Wilkinson, B. and Booth, T. J. [Evidence supporting the first secondary chromosome in actinobacteria as a hallmark of the Embleya genus](https://www.biorxiv.org/content/10.1101/2025.07.03.662523v1). *BioRxiv* (2025).
+doi: https://doi.org/10.1101/2025.07.03.662523
+
 ## Versions
 - 1.0.0
   - initial release
