@@ -24,17 +24,13 @@ def read_file(filename:str, _format: str) -> (List[str], List[str]):
             filename: path to the file to be read
             _format: string specifying 'fasta' or 'genbank' for BioPython
         returns:
-            record_names: list of record names
-            record_sequences: list of record sequences
-
+            records: a dictionary of {record.id : record.seq}
     '''
     print_to_system('Reading fasta: ' + filename)
-    record_names = []
-    record_sequences = []
+    records = {}
     for seq_record in SeqIO.parse(filename, _format):
-        record_names.append(seq_record.id)
-        record_sequences.append(seq_record.seq)
-    return record_names, record_sequences
+        records.update({seq_record.id : seq_record.seq})
+    return records
 
 def write_csv(df: DataFrame, name:str) -> None:
     '''

@@ -3,9 +3,8 @@ checks inputs for gcskewer
     functions:
     !!!!!!!!!
 '''
-from gcskewer.io import print_to_system
-
 from typing import List
+from gcskewer.io import print_to_system
 
 class GCSkewerError(Exception):
     '''
@@ -17,6 +16,21 @@ class InputError(GCSkewerError):
     Error raised for incorrectly provided inputs
     '''
 
+class OutputError(GCSkewerError):
+    '''
+    Error raised when no output is provided
+    '''
+
+def check_output(args):
+    '''
+    check an output exists
+    '''
+    output_args = [args.csv, args.svg, args.plot]
+    if all(arg is False for arg in output_args):
+        raise OutputError(
+            'No output flag was set! Please choose at least 1 output.'
+            )
+
 def check_input(args):
     '''
     Checks what input the user provided, and
@@ -26,7 +40,6 @@ def check_input(args):
             args: args from argsparse
         returns:
             input path, file extension
-
     '''
     if args.genbank is None and args.fasta is None:
         raise InputError('No input file!')
@@ -36,7 +49,9 @@ def check_input(args):
         return args.fasta, 'fasta'
     if args.fasta is None:
         return args.genbank, 'genbank'
-    raise InputError('Something unexpected happened when processing the input. Please contact directly for help!') 
+    raise InputError(
+        'Something unexpected happened when processing the input. Please contact directly for help!'
+        )
 
 def get_window_size(sequences: List):
     '''
@@ -60,7 +75,6 @@ def get_step_size(window_size: int):
     '''
     step_size = window_size // 10
     return step_size
-    
 
 def check_window_and_step(window_size, step_size, sequences):
     '''
@@ -73,7 +87,9 @@ def check_window_and_step(window_size, step_size, sequences):
     '''
     if window_size is None:
         window_size = get_window_size(sequences)
-        print_to_system('Warning: No window size provided. Automatically set to: ' + str(window_size))
+        print_to_system(
+            'Warning: No window size provided. Automatically set to: ' + str(window_size)
+            )
     if step_size is None:
         step_size = get_step_size(window_size)
         print_to_system('Warning: No step size provided. Automatically set to: ' + str(step_size))
