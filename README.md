@@ -1,30 +1,51 @@
-# skewer
-A simple script for generating GC-Skew plots from DNA sequences.
+# gcskewer
+create GC skew plots from DNA sequences in python
+
+## Installation
+The easiest way to install gcskewer is though the python package index.
+
+`pip install gcskewer`
+
+This will fetch and install the latest version from: https://pypi.org/project/gcskewer/
+
+You can also install `gcskewer` by cloning this repository.
+
+`gcskewer` requires `Bio`,`matplotlib` and `plotly`. They should be installed automatically.
+
 
 ## Usage
-```
-python skewer.py nucleotidesequence.fasta 500 50
-```
-Where the three arguments are:
+### Input
+`gcskewer` can take DNA sequences in .fasta or .gbk format. You can specify with `-f`/`--fasta` or `-g`/`--gbk`. You can't do both at the same time - only define you sequence one! For example:
 
-1. A '.fasta' or '.gbk' file containing a nucleotide sequence.
-2. The window size for the analysis.
-3. The step size for the analysis.
+`gcskewer -s -g example.gbk`
 
-It is very important to set an appropriate window and step sizes for the anaylsis. I recommend using a step size that will result in around 1,000 steps. E.g. for a sequence of 50 kb use a step size of 50. Ensure that the window size is **at least** the same size as the step. In future versions, `skewer.py` will be able to reccomend appropriate values for you.
+**or**
 
-The GC plot will be saved as skewer.html in the current directory. A table (.csv) of values will also be saved in the same directory.
+`gcskewer -s -f example.fasta`
+
+### Output
+`gcskewer` has three output formats: .csv (a comma seperated table of the results), .svg (an editable vector format graph) and .html (an interactive graph of the results). You can specify which outputs you want with `-c`/`--csv`, `-s`/`--svg` and `-p`/`--plot` (for the .html). If you are unsure, you can just specify all three:
+
+`gcskewer -g example.gbk -c -s -p`
+
+### Window and Step Size
+`gcskewer` will automatically decide the window and step size for the analysis, however you can set these values yourself. For best results, I recommend using a step size that will result in around 1,000 steps. E.g. for a sequence of 50 kb use a step size of 50. Ensure that the window size is **at least** the same size as the step. You can set the window and step size with `-ws`/`--window-size` and `-ss`/`--step-size`, respectively. For example:
+
+`gcskewer -g example.gbk -ss 50 -ws 500`
 
 ## Example Data
-Example data and output is provided in the 'example_data' folder. 
+Example data and output is provided in the `example_data` directory in this repository. There are two subdirectories `fasta` and `genbank` to illustrate how `gcskewer` operates on different input types. Each directry contains the .csv, .svg and .html output and the command used to generate then data is stored as `command.bash`.
 
-This script was origionally made to search for GRINS (genetic repeats of intense nucleotide skews) as described by Nivina et al. in their paper: [GRINS: Genetic elements that recode assembly-line polyketide synthases and accelerate their diversification](https://www.pnas.org/doi/10.1073/pnas.2100751118). As such, I have used the polyketide synthase tylactone as a test case.
+This script was origionally inspired by Nivina et al.'s paper: [GRINS: Genetic elements that recode assembly-line polyketide synthases and accelerate their diversification](https://www.pnas.org/doi/10.1073/pnas.2100751118). As such, I used the polyketide synthase tylactone as a test case. The sequence was obtained from [MiBiG](https://mibig.secondarymetabolites.org/repository/BGC0001812/index.html#r1c1).
 
-The example data contains the input file (a .fasta file containing records for the nucleotide sequences of each gene in the tylactone gene cluster, and a record of the entire sequence of the BGC) and the output files (individual '.html' and '.csv' files for each record in the input file).
+![gcskewer example output SVG](https://github.com/drboothtj/gcskewer/blob/main/example_data/gbk/BGC0001812.1_0.svg)
 
-## To Do
-1. Automatically calculate reccomended step and window sizes,
-2. Plot genbank features over the skew plot,
-3. Write the resulting data to a .csv file,
-4. Add % completeion for longer analyses,
-5. Compile into a software package.
+## Citation
+If you use `gcskewer`, please cite:
+
+Gomez-Escribano, J. P., Dorai-Raj, S., Baker, D., Lacey, E., Wilkinson, B. and Booth, T. J. Evidence supporting the first secondary chromosome in actinobacteria as a hallmark of the Embleya genus. *BioRxiv* (2025).
+DOI: https://doi.org/10.1101/2025.07.03.662523
+
+## Versions
+- 1.0.0
+  - initial release
