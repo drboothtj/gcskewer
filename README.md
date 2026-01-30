@@ -6,7 +6,7 @@ The easiest way to install gcskewer is though the python package index.
 
 `pip install gcskewer`
 
-This will fetch and install the latest version from: LINK
+This will fetch and install the latest version from: https://pypi.org/project/gcskewer/
 
 You can also install `gcskewer` by cloning this repository.
 
