@@ -73,18 +73,18 @@ def main():
     io.print_to_system('Running gcskewer...')
     args = parser.get_args()
     filename, _format = checks.check_input(args)
-    record_names, record_sequences = io.read_file(filename, _format)
-    assert record_sequences, (
+    records = io.read_file(filename, _format)
+    assert records, (
         'No input sequences!'
         'Check your file and that you have used the correct parameter for the filetype (-g/-f)'
     )
     window_size, step_size = checks.check_window_and_step(
-        args.window_size, args.step_size, record_sequences
+        args.window_size, args.step_size, records.values()
         )
 
     #For each record in the records list generate the dataframe, plot and save
-    for i in range(0, len(record_names)):
-        gc_dataframe = build_dataframe(record_names[i], record_sequences[i], window_size, step_size)
+    for record_name, record_sequence in records.items():
+        gc_dataframe = build_dataframe(record_name, record_sequence, window_size, step_size)
         name = record_names[i] + '_' + str(i)
         if args.csv:
             io.write_csv(gc_dataframe, name)
