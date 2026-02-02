@@ -21,10 +21,10 @@ def get_parser():
         description=
             '''
             Calculates and plots gc-skew from DNA sequences.
-                EXAMPLE USAGE 1:'
-                    FILL ME IN DUMMY!
-                EXAMPLE USAGE 2:'
-                    FILL ME IN TOO DUMMY!
+                EXAMPLE USAGE 1:
+                    gcskewer -f my_fasta.fna -p 
+                EXAMPLE USAGE 2:
+                    gcskewer -g my_genbank.gbk -ws 1000 -ss 100 -c
             ''',
         epilog='Written by Dr. T. J. Booth, 2023',
         formatter_class=RawTextHelpFormatter
