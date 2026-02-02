@@ -5,21 +5,7 @@ checks inputs for gcskewer
 '''
 from typing import List
 from gcskewer.output import print_to_system
-
-class GCSkewerError(Exception):
-    '''
-    General error for gcskewer
-    '''
-
-class InputError(GCSkewerError):
-    '''
-    Error raised for incorrectly provided inputs
-    '''
-
-class OutputError(GCSkewerError):
-    '''
-    Error raised when no output is provided
-    '''
+from gcskewer.classes.errors import InputError, OutputError
 
 def check_output(args):
     '''
