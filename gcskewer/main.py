@@ -1,15 +1,29 @@
 '''
 main script for gcskewer
-    functions:
-        build_dataframe(
-            record_name: str, record_sequence: str, window_size: int, step_size: int
-            ) -> DataFrame
-        calculate_skew(x: int, y: int) -> float
-        main()
 '''
+from typing import Dict, List
+
 from gcskewer import checks, output, parser
 from gcskewer.classes.dataclasses import Frame
-from typing import List
+
+def get_dict_for_plotting(frames: List[Frame]) -> Dict:
+    '''
+    gets data as a dictionary from members of the Frame class
+        arguments:
+            frames: a list of Fram objects
+        returns:
+            plotting_dict: frame data formmatted as a Dict
+    '''
+    plotting_dict = {
+        'midpoint' :  [frame.midpoint for frame in frames],  
+        'gc_skew' : [frame.gc_skew for frame in frames],
+        'at_skew' : [frame.at_skew for frame in frames],
+        'cummulative_gc_skew' : [frame.cummulative_gc for frame in frames],
+        'cummulative_at_skew' : [frame.cummulative_at for frame in frames],
+        'gc_content' : [frame.gc_content for frame in frames],
+        'at_content' : [frame.at_content for frame in frames],
+    }
+    return plotting_dict
 
 def get_frames(
     record_name: str, record_sequence: str, window_size: int, step_size: int
@@ -42,7 +56,7 @@ def main():
         returns: 
             None
     '''
-    output.print_to_system('Running gcskewer...')
+    output.print_to_system('Running gcskewer version 1.1.0')
     args = parser.get_args()
     checks.check_output(args)
     filename, _format = checks.check_input(args)
@@ -54,17 +68,18 @@ def main():
     window_size, step_size = checks.check_window_and_step(
         args.window_size, args.step_size, records.values()
         )
-
-    #For each record in the records list generate the dataframe, plot and save
     for record_name, record_sequence in records.items():
         frames = get_frames(record_name, record_sequence, window_size, step_size)
         name = record_name
+        # technically frame_dict doesnt need to be calculated for .csv
+        frame_dict = get_dict_for_plotting(frames)
         if args.csv:
             output.write_gcframes_to_csv(frames, name)
         if args.plot:
-            output.plot_html(frames, name)
+            output.plot_html(frame_dict, name)
         if args.svg:
-            output.plot_svg(gc_dataframe, name)
+            output.plot_svg(frame_dict, name)
+        Frame.reset() #vital!
     output.print_to_system('gcskewer has finished!')
 
 if __name__ == "__main__":

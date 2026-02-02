@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="gcskewer",
-    version="1.0.0",
+    version="1.1.0",
     author="Thomas J. Booth",
     author_email="thoboo@biosustain.dtu.dk",
     packages=find_packages(),
