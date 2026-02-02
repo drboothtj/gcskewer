@@ -25,6 +25,15 @@ class Frame:
         'cummulative_at'
     ] #this can be automated more safely
 
+    @classmethod
+    def reset(cls):
+        '''
+        reset the class variables
+        useful when moving to a new record
+        '''
+        cls.cummulative_gc = 0
+        cls.cummulative_at = 0
+
     def __init__(
         self, record: str, sequence: str, start: int, end: int
         ):
@@ -42,8 +51,8 @@ class Frame:
         self.a_count =  self.count_nt('A')
         self.gc_content = (self.g_count + self.c_count) / (len(self.sequence))
         self.at_content = 1 - self.gc_content
-        self.gc_skew = self.calculate_skew(self.c_count, self.g_count)
-        self.at_skew = self.calculate_skew(self.t_count, self.a_count)
+        self.gc_skew = self.calculate_skew(self.g_count, self.c_count)
+        self.at_skew = self.calculate_skew(self.a_count, self.t_count)
 
         type(self).cummulative_gc += self.gc_skew
         type(self).cummulative_at += self.at_skew
