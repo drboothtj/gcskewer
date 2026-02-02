@@ -62,7 +62,7 @@ def main():
         if args.csv:
             output.write_gcframes_to_csv(frames, name)
         if args.plot:
-            output.plot_data(gc_dataframe, name)
+            output.plot_html(frames, name)
         if args.svg:
             output.plot_svg(gc_dataframe, name)
     output.print_to_system('gcskewer has finished!')

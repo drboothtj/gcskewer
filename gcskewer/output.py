@@ -52,7 +52,7 @@ def write_gcframes_to_csv(frames: List[Frame], name:str) -> None:
         writer = csv.writer(f)
         writer.writerows(lines)
 
-def plot_data(df: DataFrame, name: str) -> None:
+def plot_html(frames: Frame, name: str, plot_gc_content:bool) -> None:
     '''
     plot the data to an .html file with plotly
          arguments:
@@ -61,24 +61,42 @@ def plot_data(df: DataFrame, name: str) -> None:
         returns:
             None
     '''
-    #create an empty figure with a secondary y axis!
+    midpoint = [frame.midpoint for frame in frames]
+    gc_skew = [frame.gc_skew for frame in frames]
+    at_skew = [frame.at_skew for frame in frames]
+    cummulative_gc_skew = [frame.cummulative_gc for frame in frames]
+    cummulative_at_skew = [frame.cummulative_at for frame in frames]
+
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    #Now individually add traces
+    ### SKEW ###
     fig.add_trace(
-        go.Scatter(x=df['mid point'], y=df['gc skew'], name='GC Skew'), secondary_y=False
+        go.Scatter(x=midpoint, y=gc_skew, name='GC Skew'), secondary_y=False
         )
     fig.add_trace(
-        go.Scatter(x=df['mid point'], y=df['at skew'], name='AT Skew'), secondary_y=False
+        go.Scatter(x=midpoint, y=at_skew, name='AT Skew'), secondary_y=False
         )
     fig.add_trace(
         go.Scatter(
-            x=df['mid point'], y=df['cummulative gc skew'], name='Cummulative GC Skew'
+            x=midpoint, y=cummulative_gc_skew, name='Cummulative GC Skew'
             ), secondary_y=True
         )
     fig.add_trace(
         go.Scatter(
-            x=df['mid point'], y=df['cummulative at skew'], name='Cummulative AT Skew'
+            x=midpoint, y=cummulative_at_skew, name='Cummulative AT Skew'
             ), secondary_y=True
+        )
+    ### CONTENT ###
+    gc_content = [frame.gc_content for frame in frames]
+    at_content = [frame.at_content for frame in frames]
+    fig.add_trace(
+        go.Scatter(
+            x=midpoint, y=gc_content, name='GC Content'
+            ), secondary_y=False
+        )
+    fig.add_trace(
+        go.Scatter(
+            x=midpoint, y=at_content, name='AT Content'
+            ), secondary_y=False
         )
     file_name = name + ".html"
     fig.write_html(file_name)

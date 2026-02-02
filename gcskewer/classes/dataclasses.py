@@ -35,12 +35,12 @@ class Frame:
         self.sequence = sequence
         self.start = start
         self.end = end
-        self.midpoint = start + (start - end) / 2
+        self.midpoint = start + (start + end) / 2
         self.g_count = self.count_nt('G')
         self.c_count = self.count_nt('C')
         self.t_count = self.count_nt('T')
         self.a_count =  self.count_nt('A')
-        self.gc_content = (self.g_count + self.c_count) / (self.t_count + self.a_count)
+        self.gc_content = (self.g_count + self.c_count) / (len(self.sequence))
         self.at_content = 1 - self.gc_content
         self.gc_skew = self.calculate_skew(self.c_count, self.g_count)
         self.at_skew = self.calculate_skew(self.t_count, self.a_count)
@@ -68,24 +68,5 @@ class Frame:
     def get_line(self):
         '''
         return a list of class variables
-        line = [
-            self.record,
-            self.sequence,
-            self.start,
-            self.end,
-            self.midpoint,
-            self.g_count, 
-            self.c_count,
-            self.t_count, 
-            self.a_count,
-            self.gc_content,
-            self.at_content,
-            self.gc_skew,
-            self.at_skew,
-            self.gc_skew,
-            self.at_skew,
-            self.cummulative_gc,
-            self.cummulative_at
-        ]
         '''
         return list(self.__dict__.values())
