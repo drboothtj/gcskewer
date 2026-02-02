@@ -37,7 +37,7 @@ def write_gcframes_to_csv(frames: List[Frame], name:str) -> None:
     '''
     writes the df to a .csv
         arguments: 
-            df: the dataframe to write
+            frames: a list of Frame objects
             name: the name of the record the dataframe was generated from
         returns:
             None
@@ -54,7 +54,7 @@ def plot_html(frames: Dict, name: str) -> None:
     '''
     plot the data to an .html file with plotly
          arguments:
-            df: the datagrame with gc skew data
+            frames: the dictionary of frame data
             name: the name of the record from which the df originated
         returns:
             None
@@ -96,7 +96,7 @@ def plot_svg(frames: Frame, name: str) -> None:
     '''
     plot svg from dataframe
         arguments:
-            df: the datagrame with gc skew data
+            frames: the dictionary of frame data
             name: the name of the record from which the df originated
         returns:
             None
