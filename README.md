@@ -47,5 +47,11 @@ Gomez-Escribano, J. P., Dorai-Raj, S., Baker, D., Lacey, E., Wilkinson, B. and B
 DOI: https://doi.org/10.1101/2025.07.03.662523
 
 ## Versions
+- 1.1.0
+  - now also plots overall GC content
+  - frame plot data is now recorded as a class 
+as opposed to depending pandas, this significantly improves runtime
+  - better naming of internal variables and functions
+  - removed erroneous placeholder text from parser and added example usage
 - 1.0.0
   - initial release
