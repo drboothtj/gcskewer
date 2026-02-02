@@ -102,4 +102,3 @@ def get_args():
     parser = get_parser()
     args = parser.parse_args()
     return args
-        

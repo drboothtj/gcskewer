@@ -4,7 +4,7 @@ checks inputs for gcskewer
     !!!!!!!!!
 '''
 from typing import List
-from gcskewer.io import print_to_system
+from gcskewer.output import print_to_system
 
 class GCSkewerError(Exception):
     '''
@@ -50,7 +50,7 @@ def check_input(args):
     if args.fasta is None:
         return args.genbank, 'genbank'
     raise InputError(
-        'Something unexpected happened when processing the input. Please contact directly for help!'
+        'Something unexpected happened when processing the input. Please report the issue!'
         )
 
 def get_window_size(sequences: List):

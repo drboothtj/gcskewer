@@ -7,8 +7,8 @@ main script for gcskewer
         calculate_skew(x: int, y: int) -> float
         main()
 '''
-from gcskewer import checks, io, parser
-from gcskewer.classes import Frame
+from gcskewer import checks, output, parser
+from gcskewer.classes.dataclasses import Frame
 from typing import List
 
 def get_frames(
@@ -25,14 +25,14 @@ def get_frames(
     '''
     skew_data = []
     sequence_length = len(record_sequence) - window_size
-    io.print_to_system('Calculating GC-skew for ' + record_name + '.')
+    output.print_to_system('Calculating GC-skew for ' + record_name + '.')
     #calculate GC skew for each subsequence using the sliding window
     for start_point in range(0, sequence_length, step_size):
         end_point = start_point + window_size
         sub_sequence = record_sequence[start_point:end_point]
-        frame = Frame(record_name, record_sequence, start_point, end_point)
+        frame = Frame(record_name, sub_sequence, start_point, end_point)
         skew_data.append(frame)
-        return skew_data
+    return skew_data
 
 def main():
     '''
@@ -42,11 +42,11 @@ def main():
         returns: 
             None
     '''
-    io.print_to_system('Running gcskewer...')
+    output.print_to_system('Running gcskewer...')
     args = parser.get_args()
     checks.check_output(args)
     filename, _format = checks.check_input(args)
-    records = io.read_file(filename, _format)
+    records = output.read_file(filename, _format)
     assert records, (
         'No input sequences!'
         'Check your file and that you have used the correct parameter for the filetype (-g/-f)'
@@ -60,12 +60,12 @@ def main():
         frames = get_frames(record_name, record_sequence, window_size, step_size)
         name = record_name
         if args.csv:
-            io.write_csv(gc_dataframe, name)
+            output.write_gcframes_to_csv(frames, name)
         if args.plot:
-            io.plot_data(gc_dataframe, name)
+            output.plot_data(gc_dataframe, name)
         if args.svg:
-            io.plot_svg(gc_dataframe, name)
-    io.print_to_system('gcskewer has finished!')
+            output.plot_svg(gc_dataframe, name)
+    output.print_to_system('gcskewer has finished!')
 
 if __name__ == "__main__":
     main()
