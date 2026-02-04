@@ -40,7 +40,6 @@ def get_frames(
     skew_data = []
     sequence_length = len(record_sequence) - window_size
     output.print_to_system('Calculating GC-skew for ' + record_name + '.')
-    #calculate GC skew for each subsequence using the sliding window
     for start_point in range(0, sequence_length, step_size):
         end_point = start_point + window_size
         sub_sequence = record_sequence[start_point:end_point]
