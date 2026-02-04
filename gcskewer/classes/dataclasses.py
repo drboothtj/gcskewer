@@ -44,7 +44,7 @@ class Frame:
         self.sequence = sequence
         self.start = start
         self.end = end
-        self.midpoint = start + (start + end) / 2
+        self.midpoint = start + end / 2
         self.g_count = self.count_nt('G')
         self.c_count = self.count_nt('C')
         self.t_count = self.count_nt('T')

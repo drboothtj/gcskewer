@@ -56,7 +56,7 @@ def main():
         returns: 
             None
     '''
-    output.print_to_system('Running gcskewer version 1.1.0')
+    output.print_to_system('Running gcskewer version 1.1.1')
     args = parser.get_args()
     checks.check_output(args)
     filename, _format = checks.check_input(args)
