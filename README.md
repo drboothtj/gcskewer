@@ -38,7 +38,7 @@ Example data and output is provided in the `example_data` directory in this repo
 
 This script was origionally inspired by Nivina et al.'s paper: [GRINS: Genetic elements that recode assembly-line polyketide synthases and accelerate their diversification](https://www.pnas.org/doi/10.1073/pnas.2100751118). As such, I used the polyketide synthase tylactone as a test case. The sequence was obtained from [MiBiG](https://mibig.secondarymetabolites.org/repository/BGC0001812/index.html#r1c1).
 
-![gcskewer example output SVG](https://github.com/drboothtj/gcskewer/blob/main/example_data/gbk/BGC0001812.1_0.svg)
+![gcskewer example output SVG](https://raw.githubusercontent.com/drboothtj/gcskewer/main/example_data/gbk/BGC0001812.1.svg)
 
 ## Citation
 If you use `gcskewer`, please cite:
@@ -48,7 +48,7 @@ DOI: https://doi.org/10.1101/2025.07.03.662523
 
 ## Versions
 - 1.1.1
-  - fixed error midpoint calculation
+  - fixed error in midpoint calculation
 - 1.1.0
   - now also plots overall GC content
   - frame plot data is now recorded as a class 
