@@ -47,6 +47,10 @@ Gomez-Escribano, J. P., Dorai-Raj, S., Baker, D., Lacey, E., Wilkinson, B. and B
 DOI: https://doi.org/10.1101/2025.07.03.662523
 
 ## Versions
+- 1.1.2
+  - added the option to write the output to a specific directory with `-d` or `--dir`
+  - organised arguments into argument groups
+  - added matplotlib to setup.py
 - 1.1.1
   - fixed error in midpoint calculation
 - 1.1.0
@@ -57,4 +61,3 @@ as opposed to depending pandas, this significantly improves runtime
   - removed erroneous placeholder text from parser and added example usage
 - 1.0.0
   - initial release
-
