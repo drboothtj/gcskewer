@@ -1,10 +1,25 @@
 '''
 main script for gcskewer
 '''
+import os
+
 from typing import Dict, List
 
 from gcskewer import checks, output, parser
 from gcskewer.classes.dataclasses import Frame
+
+def get_filename(name:str, directory:str, extension:str):
+    '''
+    format filenames for output
+        arguments:
+            name: the file name
+            directory: the directory to write to, or None
+            extension: the extension for the file
+    '''
+    filename = name + extension
+    if directory:
+        filename = os.path.join(directory, filename)
+    return filename
 
 def get_dict_for_plotting(frames: List[Frame]) -> Dict:
     '''
@@ -55,10 +70,11 @@ def main():
         returns: 
             None
     '''
-    output.print_to_system('Running gcskewer version 1.1.1')
+    output.print_to_system('Running gcskewer version 1.1.2')
     args = parser.get_args()
     checks.check_output(args)
     filename, _format = checks.check_input(args)
+    checks.check_directory(args.dir)
     records = output.read_file(filename, _format)
     assert records, (
         'No input sequences!'
@@ -73,11 +89,14 @@ def main():
         # technically frame_dict doesnt need to be calculated for .csv
         frame_dict = get_dict_for_plotting(frames)
         if args.csv:
-            output.write_gcframes_to_csv(frames, name)
+            filename = get_filename(name, args.dir, '.csv')
+            output.write_gcframes_to_csv(frames, filename)
         if args.plot:
-            output.plot_html(frame_dict, name)
+            filename = get_filename(name, args.dir, '.html')
+            output.plot_html(frame_dict, filename)
         if args.svg:
-            output.plot_svg(frame_dict, name)
+            filename = get_filename(name, args.dir, '.svg')
+            output.plot_svg(frame_dict, filename)
         Frame.reset() #vital!
     output.print_to_system('gcskewer has finished!')
 

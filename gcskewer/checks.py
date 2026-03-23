@@ -3,9 +3,21 @@ checks inputs for gcskewer
     functions:
     !!!!!!!!!
 '''
+import os
 from typing import List
 from gcskewer.output import print_to_system
 from gcskewer.classes.errors import InputError, OutputError
+
+def check_directory(directory:str):
+    '''
+    check if a directory exists and if not create one
+    '''
+    if not os.path.exists(directory):
+        print(
+            f'WARNING: Directory {directory} does not exists.'
+            'Creating a new directory...'
+            )
+        os.makedirs(directory)
 
 def check_output(args):
     '''

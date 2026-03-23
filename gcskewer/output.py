@@ -8,6 +8,8 @@ reading and writing for gcskewer
         print_to_system(string_to_print: str) -> None
 '''
 import csv
+import os
+
 from datetime import datetime
 from typing import List, Dict
 
@@ -33,7 +35,7 @@ def read_file(filename:str, _format: str) -> (List[str], List[str]):
         records.update({seq_record.id : seq_record.seq})
     return records
 
-def write_gcframes_to_csv(frames: List[Frame], name:str) -> None:
+def write_gcframes_to_csv(frames: List[Frame], filename:str) -> None:
     '''
     writes the df to a .csv
         arguments: 
@@ -44,13 +46,12 @@ def write_gcframes_to_csv(frames: List[Frame], name:str) -> None:
     '''
     lines = [Frame.header]
     lines.extend([frame.get_line() for frame in frames])
-    filename = name + '.csv'
     print_to_system('Writing to ' + filename)
     with open(filename, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(lines)
 
-def plot_html(frames: Dict, name: str) -> None:
+def plot_html(frames: Dict, filename: str) -> None:
     '''
     plot the data to an .html file with plotly
          arguments:
@@ -88,11 +89,10 @@ def plot_html(frames: Dict, name: str) -> None:
             x=frames['midpoint'], y=frames['at_content'], name='AT Content'
             ), secondary_y=False
         )
-    file_name = name + ".html"
-    fig.write_html(file_name)
-    print_to_system('Plot saved to ' + file_name)
+    fig.write_html(filename)
+    print_to_system('Plot saved to ' + filename)
 
-def plot_svg(frames: Frame, name: str) -> None:
+def plot_svg(frames: Frame, filename: str) -> None:
     '''
     plot svg from dataframe
         arguments:
@@ -109,7 +109,7 @@ def plot_svg(frames: Frame, name: str) -> None:
     ax1.plot(frames['midpoint'], frames['at_content'], label="AT content", color='#f0e442')
     ax1.set_xlabel('Position')
     ax1.set_ylabel('Skew/Content')
-    ax1.set_title('GC skew of ' + name)
+    ax1.set_title('GC skew of ' + os.path.splitext(os.path.basename(filename))[0])
     ### AXIS2: CUMMULATIVE SKEW ###S
     ax2 = plt.twinx()
     ax2.plot(
@@ -125,7 +125,7 @@ def plot_svg(frames: Frame, name: str) -> None:
     lines, labels = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     plt.legend(lines + lines2, labels + labels2)
-    plt.savefig(name + '.svg')
+    plt.savefig(filename)
 
 def print_to_system(string_to_print: str) -> None:
     '''

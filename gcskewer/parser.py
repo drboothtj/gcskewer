@@ -2,6 +2,7 @@
 parser for gcskewer
     functions:
         get_parser()
+        get_arguments(parser):
         get_args()
 '''
 
@@ -26,10 +27,20 @@ def get_parser():
                 EXAMPLE USAGE 2:
                     gcskewer -g my_genbank.gbk -ws 1000 -ss 100 -c
             ''',
-        epilog='Written by Dr. T. J. Booth, 2023',
+        epilog='Written by Dr. Thom Booth, 2023',
         formatter_class=RawTextHelpFormatter
     )
-    parser.add_argument(
+    return parser
+
+def add_input_parser(parser):
+    '''
+    add input subparser to parser
+    '''
+    input_parser = parser.add_argument_group(
+            'inputs',
+            'define the input path for genbank or fasta inputs\n'
+            )
+    input_parser.add_argument(
         '-g',
         '--genbank',
         type=str,
@@ -38,7 +49,7 @@ def get_parser():
             'path to input genbank file'
         )
     )
-    parser.add_argument(
+    input_parser.add_argument(
         '-f',
         '--fasta',
         type=str,
@@ -47,7 +58,18 @@ def get_parser():
             'path to input fasta nucleotide file'
         )
     )
-    parser.add_argument(
+    return parser
+
+def add_window_parser(parser):
+    '''
+    add window subparser to parser
+    '''
+    window_parser = parser.add_argument_group(
+        'window parameters',
+        'define the parameters of the sliding window\n'
+        'NOTE: parameters will be automatically optimised if left blank\n' 
+        )
+    window_parser.add_argument(
         '-ws',
         '--window-size',
         type=int,
@@ -56,7 +78,7 @@ def get_parser():
             'window size for gc-skew plot'
         )
     )
-    parser.add_argument(
+    window_parser.add_argument(
         '-ss',
         '--step-size',
         type=int,
@@ -65,7 +87,27 @@ def get_parser():
             'step size for gc-skew plot'
         )
     )
-    parser.add_argument(
+    return parser
+
+def add_output_parser(parser):
+    '''
+    add output subparser to parser
+    '''
+    output_parser = parser.add_argument_group(
+        'output parameters',
+        'define the outputs and output directory\n'
+        )
+    output_parser.add_argument(
+        '-d',
+        '--dir',
+        type=str,
+        default=None,
+        help=(
+            'the directory to save the outputs\n'
+            'NOTE: defaults to the current directory'
+        )
+    )
+    output_parser.add_argument(
         '-c',
         '--csv',
         action="store_true",
@@ -73,7 +115,7 @@ def get_parser():
             'write the output to a .csv file'
         )
     )
-    parser.add_argument(
+    output_parser.add_argument(
         '-s',
         '--svg',
         action="store_true",
@@ -81,7 +123,7 @@ def get_parser():
             'write the output to an .svg file'
         )
     )
-    parser.add_argument(
+    output_parser.add_argument(
         '-p',
         '--plot',
         action="store_true",
@@ -89,6 +131,15 @@ def get_parser():
             'write the output to an .html file'
         )
     )
+    return parser
+
+def get_arguments(parser):
+    '''
+    add argument subparsers to the parser
+    '''
+    add_input_parser(parser)
+    add_window_parser(parser)
+    add_output_parser(parser)
     return parser
 
 def get_args():
@@ -100,5 +151,6 @@ def get_args():
             args: arguments object
     '''
     parser = get_parser()
+    parser = get_arguments(parser)
     args = parser.parse_args()
     return args
