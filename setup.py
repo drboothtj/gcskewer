@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="gcskewer",
-    version="1.1.1",
+    version="1.1.2",
     author="Thomas J. Booth",
     author_email="thoboo@biosustain.dtu.dk",
     packages=find_packages(),
@@ -15,6 +15,9 @@ setup(
     url="https://github.com/DrBoothTJ/skewer",
     license='GNU General Public License v3.0',
     python_requires='>=3.7',
-    install_requires=['plotly','Bio'],
+    install_requires=[
+      'plotly',
+      'Bio',
+      'matplotlib'],
     entry_points={'console_scripts': ["gcskewer=gcskewer.main:main"]}
 )
