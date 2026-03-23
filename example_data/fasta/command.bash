@@ -1,1 +1,1 @@
-gcskewer -f BGC0001812.fasta -s -c -p
+gcskewer -f BGC0001812.fasta -s -c -p -d output

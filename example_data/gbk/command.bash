@@ -1,1 +1,1 @@
-gcskewer -g BGC0001812.gbk -s -c -p
+gcskewer -g BGC0001812.gbk -s -c -p -d output
