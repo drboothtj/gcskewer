@@ -93,10 +93,10 @@ def main():
             output.write_gcframes_to_csv(frames, filename)
         if args.plot:
             filename = get_filename(name, args.dir, '.html')
-            output.plot_html(frame_dict, filename)
+            output.plot_html(frame_dict, filename, args.variables)
         if args.svg:
             filename = get_filename(name, args.dir, '.svg')
-            output.plot_svg(frame_dict, filename)
+            output.plot_svg(frame_dict, filename, args.variables)
         Frame.reset() #vital!
     output.print_to_system('gcskewer has finished!')
 

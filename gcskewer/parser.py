@@ -131,6 +131,22 @@ def add_output_parser(parser):
             'write the output to an .html file'
         )
     )
+    variables = [
+        'gc_skew',
+        'at_skew',
+        'cummulative_gc_skew',
+        'cummulative_at_skew',
+        'gc_content',
+        'at_content',
+    ]
+    output_parser.add_argument(
+        '-v',
+        '--variables',
+        nargs='+',
+        choices=variables,
+        default=variables,
+        help=('variables to plot'),
+    )
     return parser
 
 def get_arguments(parser):
@@ -153,4 +169,5 @@ def get_args():
     parser = get_parser()
     parser = get_arguments(parser)
     args = parser.parse_args()
+    args.variables = set(args.variables)
     return args
